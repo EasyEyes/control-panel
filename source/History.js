@@ -74,7 +74,7 @@ export default class History extends Component {
                 className="button-grey button-small"
                 onClick={() => {
                   window.open(
-                    `https://pavlovia.org/${username}/${this.state.selected.name.toLowerCase()}`
+                    `https://pavlovia.org/${username}/${this.state.selected.name.toLowerCase()}`,
                   );
                 }}
               >
@@ -83,10 +83,10 @@ export default class History extends Component {
               <button
                 className="button-grey button-small"
                 onClick={async () => {
-                  await downloadDataFolder(user, this.state.selected);
+                  // await downloadDataFolder(user, this.state.selected);
                 }}
               >
-                Download results
+                Download results (Temporarily Disabled. Use Pavlovia for now.)
               </button>
             </div>
           )}
