@@ -482,20 +482,20 @@ export default class Running extends Component {
                 <button
                   className="button-grey button-small button-download"
                   onClick={async () => {
-                    // const prolificStudyId = await getProlificStudyId(
-                    //   user,
-                    //   newRepo?.id,
-                    // );
-                    // await downloadDataFolder(
-                    //   user,
-                    //   newRepo,
-                    //   prolificStudyId,
-                    //   prolificToken,
-                    //   downloadDemographicData,
-                    // );
+                    const prolificStudyId = await getProlificStudyId(
+                      user,
+                      newRepo?.id,
+                    );
+                    await downloadDataFolder(
+                      user,
+                      newRepo,
+                      prolificStudyId,
+                      prolificToken,
+                      downloadDemographicData,
+                    );
                   }}
                 >
-                  Download results (Temporarily Disabled. Use Pavlovia for now.)
+                  Download results
                 </button>
 
                 <button
