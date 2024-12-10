@@ -31,6 +31,7 @@ export default class Running extends Component {
         props.previousExperiment || props.experimentStatus === "RUNNING",
       completionCode: undefined,
       dataFolderLength: 0,
+      latestDateForDataCollection: false,
     };
 
     this.setModeToRun = this.setModeToRun.bind(this);
@@ -39,11 +40,9 @@ export default class Running extends Component {
   async componentDidMount() {
     this.props.scrollToCurrentStep();
 
-    const dataFolderLength = await getDataFolderCsvLength(
-      this.props.user,
-      this.props.newRepo,
-    );
-    this.setState({ dataFolderLength });
+    const [dataFolderLength, latestDateForDataCollection] =
+      await getDataFolderCsvLength(this.props.user, this.props.newRepo);
+    this.setState({ dataFolderLength, latestDateForDataCollection });
 
     // get total compile counts
     get(ref(db, "compileCounts/")).then((snapshot) => {
@@ -63,11 +62,9 @@ export default class Running extends Component {
 
   async componentDidUpdate(prevProps) {
     if (this.props.newRepo !== prevProps.newRepo) {
-      const dataFolderLength = await getDataFolderCsvLength(
-        this.props.user,
-        this.props.newRepo,
-      );
-      this.setState({ dataFolderLength });
+      const [dataFolderLength, latestDateForDataCollection] =
+        await getDataFolderCsvLength(this.props.user, this.props.newRepo);
+      this.setState({ dataFolderLength, latestDateForDataCollection });
     }
   }
 
@@ -166,7 +163,12 @@ export default class Running extends Component {
       previousExperimentViewed: { previousRecruitmentInformation },
       viewingPreviousExperiment,
     } = this.props;
-    const { pavloviaIsReady, completionCode, dataFolderLength } = this.state;
+    const {
+      pavloviaIsReady,
+      completionCode,
+      dataFolderLength,
+      latestDateForDataCollection,
+    } = this.state;
 
     const isRunning = experimentStatus === "RUNNING";
 
@@ -534,7 +536,10 @@ export default class Running extends Component {
                 </button>
 
                 <span className="csv-ready">
-                  {`${dataFolderLength}`} CSV file(s) ready
+                  {`${dataFolderLength}`} CSV file(s){" "}
+                  {latestDateForDataCollection !== false
+                    ? "as of " + latestDateForDataCollection
+                    : ""}
                 </span>
               </div>
 
@@ -555,11 +560,15 @@ export default class Running extends Component {
                       previousExperimentViewed,
                       projectName,
                     } = this.props;
-                    const dataFolderLength = await getDataFolderCsvLength(
-                      this.props.user,
-                      this.props.newRepo,
-                    );
-                    this.setState({ dataFolderLength });
+                    const [dataFolderLength, latestDateForDataCollection] =
+                      await getDataFolderCsvLength(
+                        this.props.user,
+                        this.props.newRepo,
+                      );
+                    this.setState({
+                      dataFolderLength,
+                      latestDateForDataCollection,
+                    });
                     await this.getProlificStudyStatus();
                     const result = await getExperimentStatus(user, newRepo);
                     functions.handleSetExperimentStatus(result);
