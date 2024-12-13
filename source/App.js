@@ -464,6 +464,7 @@ export default class App extends Component {
     // end of 'upload'
     this.setState({
       newRepo: newRepo,
+      activeExperiment: newRepo,
       user: {
         ...this.state.user,
         currentExperiment: {
