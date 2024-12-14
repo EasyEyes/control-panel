@@ -144,8 +144,10 @@ export default class StatusLines extends Component {
       // compatibilityLanguage,
       prolificStudyStatus,
       profileStatement,
+      newRepo,
     } = this.props;
-    const viewingPreviousExperiment = activeExperiment !== "new";
+    const viewingPreviousExperiment =
+      activeExperiment !== "new" && activeExperiment !== newRepo;
 
     const showExperimentURL =
       !!(user && projectName && experimentStatus === "RUNNING") ||

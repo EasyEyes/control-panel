@@ -567,7 +567,8 @@ export default class App extends Component {
     } = this.state;
     const steps = [];
 
-    const viewingPreviousExperiment = activeExperiment !== "new";
+    const viewingPreviousExperiment =
+      activeExperiment !== "new" && activeExperiment !== newRepo;
 
     // if (user) steps.push(<History key={"history"} user={user} />);
 
